@@ -9,3 +9,7 @@ export {
     setAuthRedirectPath,
     authCheckState
 } from './auth';
+
+export{
+    addData
+    } from './profile';

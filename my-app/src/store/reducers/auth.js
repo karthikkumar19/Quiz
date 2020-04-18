@@ -6,6 +6,7 @@ const initialState = {
     userId:null,
     error:null,
     loading:false,
+    form:false,
     authRedirectPath: '/main'
 }
 
@@ -14,13 +15,16 @@ const authStart = (state, action) => {
 };
 
 const authSuccess = (state, action) => {
-    return updateObject(state, {
+    console.log(`'${action.redirectPath}'`)
+    return updateObject(state,{
         token:action.idToken,
         userId:action.userId,
         error:null,
-        loading:false
+        loading:false,
+        form:action.redirectPath
     });
 }
+
 
 const authFail = (state,action) => {
     return updateObject(state,{

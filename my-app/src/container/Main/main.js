@@ -1,23 +1,38 @@
-import React from 'react';
-import {Jumbotron, Button} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+
+import Profiles from '../Profiles/profiles';
 import classes from './main.module.css';
+import Form from '../Addprofile/addpro';
 import Layout from '../../hoc/Layout/Layout';
 
-const Main = props =>{
-    return(
-        <Layout>
+class Main extends Component{
+    render(){
+        console.log(this.props.form);
+        console.log(this.props.authRedirectPath)
+        let page = <Profiles/>
+        if(this.props.form){
+            page = <Form/>
+        }
+        return(
+            <Layout>
+    
+            <div >
+                {page}
+            </div>
+            </Layout>
+        )
+    }
 
-        <div className={classes.Main}>
-            <Jumbotron  fluid>
-            <p>Tabs comes here</p>
-</Jumbotron>
-<Link to="/logout">
-<Button variant="warning">Logout</Button>
-</Link>
-        </div>
-        </Layout>
-    )
+    
 }
+const mapStateToProps = state => {
+    return {
+        form:state.auth.form,
+        authRedirectPath:state.auth.authRedirectPath
+    };
+};
 
-export default Main;
+
+
+export default connect(mapStateToProps)(Main);

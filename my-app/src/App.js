@@ -26,7 +26,9 @@ const asyncMain = asyncComponent(()=>{
   return import('./container/Main/main');
 })
 
-
+const asyncForm = asyncComponent(() =>{
+  return import('./container/Addprofile/addpro');
+})
 
 
 class App extends React.Component  {
@@ -43,6 +45,8 @@ render(){
       <Route path="/" exact component={asyncHome}  />
       <Route path="/guest" exact component={asyncGuest}/>
       <Route path="/smeauth" exact component={asyncSmelogin} />
+      <Route path="/main" exact component={asyncMain}/>
+      <Route path="/form" exact component={asyncForm}/>
       <Redirect to="/" />
     </Switch>
   );
@@ -51,11 +55,13 @@ render(){
     console.log(this.props.isAuthenticated);
     routes = (
       <Switch>
+        <Route path="/form" exact component={asyncForm}/>
+              <Route path="/main" exact component={asyncMain}/>
+        
         <Route path="/logout" exact component={Logout} /> 
         <Route path="/" exact component={asyncHome}  />
       <Route path="/guest" exact component={asyncGuest}/>
       <Route path="/smeauth" exact component={asyncSmelogin} />
-      <Route path="/main" exact component={asyncMain}/>
         <Redirect to="/" />
       </Switch>
     );

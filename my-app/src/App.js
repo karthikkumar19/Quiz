@@ -45,14 +45,11 @@ render(){
       <Route path="/" exact component={asyncHome}  />
       <Route path="/guest" exact component={asyncGuest}/>
       <Route path="/smeauth" exact component={asyncSmelogin} />
-      <Route path="/main" exact component={asyncMain}/>
-      <Route path="/form" exact component={asyncForm}/>
       <Redirect to="/" />
     </Switch>
   );
 
   if ( this.props.isAuthenticated ) {
-    console.log(this.props.isAuthenticated);
     routes = (
       <Switch>
         <Route path="/form" exact component={asyncForm}/>

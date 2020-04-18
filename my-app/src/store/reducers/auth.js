@@ -2,6 +2,8 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../../shared/utility';
 
 const initialState = {
+    pages:[],
+    purchased:false,
     token:null,
     userId:null,
     error:null,
@@ -15,7 +17,6 @@ const authStart = (state, action) => {
 };
 
 const authSuccess = (state, action) => {
-    console.log(`'${action.redirectPath}'`)
     return updateObject(state,{
         token:action.idToken,
         userId:action.userId,
@@ -46,6 +47,26 @@ const setAuthRedirectPath = (state,action) => {
     });
 };
 
+const addDataInit = (state) => {
+    return updateObject(state,{purchased:false});
+}
+const addDataStart = (state) => {
+    return updateObject(state,{loading:true});
+}
+const addDataSuccess = (state,action,props) =>{
+    const newPage = updateObject(action.pageData,{id:action.pageId});
+    return updateObject(state,{
+        loading:false,
+        purchased:true,
+        form:false,
+        pages:state.pages.concat(newPage)
+    });
+}
+const addDataFail = (state) => {
+    return updateObject(state,{loading:false});
+}
+
+
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.AUTH_START:return authStart(state,action);
@@ -53,6 +74,15 @@ const authReducer = (state = initialState, action) => {
         case actionTypes.AUTH_FAIL: return authFail(state,action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state,action);
         case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state,action);
+        case actionTypes.ADD_DATA_INIT:return addDataInit(state);
+        case actionTypes.ADD_DATA_START:return addDataStart(state);
+        case actionTypes.ADD_DATA_SUCCESS:return addDataSuccess(state,action);
+        case actionTypes.ADD_DATA_FAIL:return addDataFail(state);
+        // case actionTypes.EDIT_PAGE_INIT:return editPageInit(state);
+        // case actionTypes.EDIT_PAGE_START:return editPageStart(state);
+        // case actionTypes.EDIT_PAGE_SUCCESS:return editPageSuccess(state);
+        // case actionTypes.EDIT_PAGE_FAIL:return editPageFail(state);
+        
         default: return state
     }
 }

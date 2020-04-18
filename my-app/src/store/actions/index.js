@@ -1,7 +1,4 @@
 
-// export {
-//     fetchBusDetail
-// } from './busdetails';
 
 export {
     auth,
@@ -11,5 +8,6 @@ export {
 } from './auth';
 
 export{
-    addData
+    addData,
+    fetchData
     } from './profile';

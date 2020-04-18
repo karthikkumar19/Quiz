@@ -242,7 +242,11 @@ class Addpro extends Component {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
         console.log(formData);
-        this.props.onAddData(formData);
+        const profile = {
+            formData:formData,
+            userId:this.props.userId
+        }
+        this.props.onAddData(profile,this.props.token);
             
     }
 
@@ -312,8 +316,8 @@ class Addpro extends Component {
 
 const mapStateToProps = state =>{
     return{
-        loading:state.profile.loading,
-        purchased:state.profile.purchased,
+        loading:state.auth.loading,
+        purchased:state.auth.purchased,
         token: state.auth.token,
         userId:state.auth.userId
     }
@@ -321,7 +325,7 @@ const mapStateToProps = state =>{
 
 const mapDispatchToProps = dispatch => {
     return{
-        onAddData : (proData) => dispatch(actions.addData(proData)),
+        onAddData : (proData,token) => dispatch(actions.addData(proData,token)),
     }
 };
 

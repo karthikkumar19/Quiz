@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans&display=swap');
+
+.NavigationItems {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    height: 100%;
+    font-family: 'PT Sans', sans-serif;}
+
+@media (min-width: 500px) {
+    .NavigationItems {
+        flex-flow: row;
+    }
+}
+
+.DesktopOnly{
+   margin-right: 500px;
+    position: relative;
+    color:white;
+}
+
+@media (max-width: 913px) {
+    .DesktopOnly {
+        display: none;
+    }
+}
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdowncontent {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdowncontent button {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+  }
+  
+  .dropdowncontent button:hover {background-color: #f1f1f1}
+  
+  .dropdown:hover .dropdowncontent {
+    display: block;
+  }
+  
+  .dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+  }

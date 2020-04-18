@@ -8,11 +8,12 @@
 }
 
 .NavigationItem a {
-    color: #8F5C2C;
+    color: black;
     text-decoration: none;
     width: 100%;
     box-sizing: border-box;
     display: block;
+    background-color: white;
 }
 
 .NavigationItem a:hover,
@@ -31,10 +32,10 @@
     }
     
     .NavigationItem a {
-        color: white;
+        color: black;
         height: 100%;
         padding: 16px 10px;
-        border-bottom: 4px solid transparent;
+        border-bottom: 4px solid burlywood;
     }
     
     .NavigationItem a:hover,

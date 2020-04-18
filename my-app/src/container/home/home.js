@@ -10,7 +10,9 @@ const Home = props => {
            <Button className={classes.Button} variant="primary" >Guest</Button>
            </Link> 
             <br/>
+            <Link to="/smeauth">
             <Button className={classes.Button} variant="success">SME Login</Button>
+            </Link>
         </div>
     )
 }

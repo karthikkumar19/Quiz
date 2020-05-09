@@ -1,0 +1,12 @@
+.inputMain h1{
+    text-align: center;
+}
+
+.inputMain{
+    width: 60%;
+    margin: auto;
+}
+
+.Form{
+    margin-top: 0px !important;
+}

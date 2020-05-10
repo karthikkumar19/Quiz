@@ -3,12 +3,14 @@ import {updateObject} from '../../shared/utility';
 
 const initialState = {
     quizes:[],
+    profile:[],
     fetched:false,
     token:null,
     userId:null,
+    form:false,
     error:null,
     loading:false,
-    authRedirectPath: '/'
+    authRedirectPath: '/user'
 }
 
 const authStart = (state, action) => {
@@ -16,11 +18,13 @@ const authStart = (state, action) => {
 };
 
 const authSuccess = (state, action) => {
+    console.log(action.redirectPath)
     return updateObject(state,{
         token:action.idToken,
         userId:action.userId,
         error:null,
         loading:false,
+        form:action.redirectPath
     });
 }
 
@@ -63,6 +67,27 @@ const addDataFail = (state) => {
     return updateObject(state,{loading:false});
 }
 
+const addProfileInit = (state) => {
+    return updateObject(state,{fetched:false,
+    });
+}
+const addProfileStart = (state) => {
+    return updateObject(state,{loading:true});
+}
+const addProfileSuccess = (state,action,props) =>{
+    console.log('work')
+    const newProfile = updateObject(action.profileData,{id:action.profileId});
+    return updateObject(state,{
+        loading:false,
+        fetched:true,
+        form:false,
+        profile:state.profile.concat(newProfile)
+    });
+}
+const addProfileFail = (state) => {
+    return updateObject(state,{loading:false});
+}
+
 
 const authReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -75,6 +100,11 @@ const authReducer = (state = initialState, action) => {
         case actionTypes.ADD_DATA_START:return addDataStart(state);
         case actionTypes.ADD_DATA_SUCCESS:return addDataSuccess(state,action);
         case actionTypes.ADD_DATA_FAIL:return addDataFail(state);
+        case actionTypes.ADD_PROFILE_INIT:return addProfileInit(state);
+        case actionTypes.ADD_PROFILE_START:return addProfileStart(state);
+        case actionTypes.ADD_PROFILE_SUCCESS:return addProfileSuccess(state,action);
+        case actionTypes.ADD_PROFILE_FAIL:return addProfileFail(state);
+       
         // case actionTypes.EDIT_PAGE_INIT:return editPageInit(state);
         // case actionTypes.EDIT_PAGE_START:return editPageStart(state);
         // case actionTypes.EDIT_PAGE_SUCCESS:return editPageSuccess(state);

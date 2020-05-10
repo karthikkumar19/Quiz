@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import Spinner from '../components/UI/Spinner/Spinner';
 import * as actions from '../store/actions/index';
+import {Redirect} from 'react-router-dom';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 
 class Quiz extends Component{
@@ -15,7 +16,8 @@ class Quiz extends Component{
      this.state = {
       questions: this.props.questions,
       score:0,
-      disabled:false
+      disabled:false,
+      submitted:false
     }
    }
    componentWillReceiveProps(nextProps){
@@ -27,7 +29,7 @@ class Quiz extends Component{
 componentDidMount(){
 this.props.onFetchData();
 
-    // console.log(this.props.data)
+    console.log(this.state.questions)
 }
   
 
@@ -84,8 +86,12 @@ console.log(questions,event.target.name,event.target.value)
 
   submit = () => {
       this.check();
-      console.log(this.state.score)
-this.setState({disabled:true})
+      console.log(this.props.profile[0].id)
+      let score ={
+        score:this.state.score,
+        submitted:true
+      }
+      this.props.onAddScore(this.props.profile[0].id,score);
   }
 
     render(){
@@ -130,12 +136,14 @@ this.setState({disabled:true})
         })
        }
 
+       const updatedRedirect = this.props.updated ? <Redirect to='/user' /> : null;
 
 return(
     <Layout>
  <div className={classes.main}>
             <h1 className={classes.title}>Quiz</h1>
                {disp}
+               {updatedRedirect}
             <Button disabled={this.state.disabled}  variant="success" className={classes.button} 
              onClick={this.submit}>Submit</Button>
             <h1 className={classes.score}>{this.state.score}</h1>
@@ -151,6 +159,8 @@ const mapStateToProps = state => {
       questions:state.quizdata.questions,
       loading:state.quizdata.loading,
       fetched:state.quizdata.fetched,
+      profile:state.profile.profile,
+      updated:state.quizdata.updated
       // isAuthenticated: state.auth.token !== null
        // token:state.auth.token,
       // userId:state.auth.userId
@@ -160,6 +170,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return{
       onFetchData : () => dispatch(actions.fetchData()),
+      onAddScore : (id,scoreData) => dispatch(actions.addScore(id,scoreData)),
+
   }
 }
 

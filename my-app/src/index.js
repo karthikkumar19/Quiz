@@ -9,11 +9,13 @@ import thunk from 'redux-thunk';
 import App from './App';
 import authReducer from './store/reducers/auth';
 import quizReducer from './store/reducers/quiz';
+import profileReducer from './store/reducers/profile';
 
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
 const rootReducer = combineReducers({
   auth: authReducer,
-  quizdata:quizReducer
+  quizdata:quizReducer,
+  profile:profileReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(
@@ -22,7 +24,7 @@ const store = createStore(rootReducer, composeEnhancers(
 
 const app = (
 <Provider store={store}>
-<BrowserRouter>
+<BrowserRouter >
     <App />
     </BrowserRouter>
 </Provider>

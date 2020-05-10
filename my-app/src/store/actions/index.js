@@ -9,5 +9,11 @@ export {
 
 export{
     addData,
-    fetchData
+    fetchData,
+    addScore
     } from './quiz';
+
+    export{
+        addProfile,
+        fetchProfile
+    }from './profile';

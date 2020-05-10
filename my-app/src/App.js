@@ -14,6 +14,10 @@ const asyncAdd = asyncComponent(() => {
   return import('./quiz/AddQuiz/addquiz');
 })
 
+const asyncUser = asyncComponent(() => {
+  return import('./quiz/user/user');
+})
+
 const asyncHome = asyncComponent(() => {
   return import ('./quiz/home');
 })
@@ -42,10 +46,11 @@ render(){
   if ( this.props.isAuthenticated ) {
     routes = (
       <Switch>
+              <Route path="/quiz" exact component={asyncQuiz}/> 
+        <Route path="/user" component={asyncUser}/>
          <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
-        <Route path="/" exact component={asyncHome}  />
-      <Route path="/quiz" exact component={asyncQuiz}/> 
+        <Route path="/" exact component={Auth}  />
        <Route path="/add" exact component={asyncAdd} />
       <Redirect to="/" />
       </Switch>

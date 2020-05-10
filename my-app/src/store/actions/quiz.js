@@ -83,3 +83,43 @@ export const fetchData = (token, userId) => {
             });
     }
 }
+
+export const addScoreSuccess = (id, scoreData) => {
+    return{
+        type:actionTypes.ADD_SCORE_SUCCESS,
+        scoreId: id,
+        scoreData:scoreData
+    };
+};
+
+export const addScoreFail = (error) => {
+    return{
+        type: actionTypes.ADD_SCORE_FAIL,
+        error: error
+    };
+}
+
+export const addScoreStart = () =>{
+    return{
+        type:actionTypes.ADD_SCORE_START
+    };
+}
+
+export const addScore = (id,scoreData) => {
+    return dispatch => {
+        dispatch (addScoreStart());
+        axios.put( `https://quiz-4cf36.firebaseio.com/profile/${id}/score.json`,scoreData )
+        .then( response => {
+            dispatch(addScoreSuccess(response.data.name, scoreData));
+        } )
+        .catch( error => {
+            dispatch(addScoreFail(error));
+        } );
+    }
+}
+
+export const addScoreInit = () => {
+    return {
+        type:actionTypes.ADD_SCORE_INIT
+    };
+};

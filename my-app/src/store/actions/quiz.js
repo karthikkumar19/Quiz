@@ -1,11 +1,11 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-export const addDataSuccess = (id, pageData) => {
+export const addDataSuccess = (id, quizData) => {
     return{
         type:actionTypes.ADD_DATA_SUCCESS,
-        pageId: id,
-        pageData:pageData
+        quizId: id,
+        quizData:quizData
     };
 };
 
@@ -22,12 +22,12 @@ export const addDataStart = () =>{
     };
 }
 
-export const addData = (proData,token) => {
+export const addData = (quizData) => {
     return dispatch => {
         dispatch (addDataStart());
-        axios.post( 'https://sme-startup.firebaseio.com/profiles.json?auth' + token, proData )
+        axios.post( 'https://quiz-4cf36.firebaseio.com/quiz.json',quizData )
         .then( response => {
-            dispatch(addDataSuccess(response.data.name, proData));
+            dispatch(addDataSuccess(response.data.name, quizData));
         } )
         .catch( error => {
             dispatch(addDataFail(error));
@@ -61,11 +61,13 @@ export const fetchDataStart = () => {
     };
 };
 
+
+
 export const fetchData = (token, userId) => {
     return dispatch => {
         dispatch(fetchDataStart());
         // const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
-        axios.get('https://sme-startup.firebaseio.com/profiles.json' )
+        axios.get('https://quiz-4cf36.firebaseio.com/quiz.json' )
             .then(res => {
                 const fetchedData = [];
                 for (let key in res.data) {

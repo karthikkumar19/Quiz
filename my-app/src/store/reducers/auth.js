@@ -2,14 +2,13 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../../shared/utility';
 
 const initialState = {
-    pages:[],
-    purchased:false,
+    quizes:[],
+    fetched:false,
     token:null,
     userId:null,
     error:null,
     loading:false,
-    form:false,
-    authRedirectPath: '/main'
+    authRedirectPath: '/'
 }
 
 const authStart = (state, action) => {
@@ -22,7 +21,6 @@ const authSuccess = (state, action) => {
         userId:action.userId,
         error:null,
         loading:false,
-        form:action.redirectPath
     });
 }
 
@@ -48,18 +46,17 @@ const setAuthRedirectPath = (state,action) => {
 };
 
 const addDataInit = (state) => {
-    return updateObject(state,{purchased:false});
+    return updateObject(state,{fetched:false});
 }
 const addDataStart = (state) => {
     return updateObject(state,{loading:true});
 }
 const addDataSuccess = (state,action,props) =>{
-    const newPage = updateObject(action.pageData,{id:action.pageId});
+    const newQuiz = updateObject(action.quizData,{id:action.quizId});
     return updateObject(state,{
         loading:false,
-        purchased:true,
-        form:false,
-        pages:state.pages.concat(newPage)
+        fetched:true,
+        quizes:state.quizes.concat(newQuiz)
     });
 }
 const addDataFail = (state) => {

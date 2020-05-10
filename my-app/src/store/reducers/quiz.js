@@ -2,10 +2,11 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../../shared/utility';
 
 const initialState = {
-    profiles:[],
+    questions:[],
     loading:false,
-    purchased:false
+    fetched:false
 }
+
 
 
 const fetchDataStart = (state) => {
@@ -13,15 +14,16 @@ const fetchDataStart = (state) => {
 }
 const fetchDataSuccess = (state,action) => {
     return updateObject(state, {
-        profiles:action.data,
-        loading:false
+        questions:action.data,
+        loading:false,
+        fetched:true
     });
 }
 const fetchDataFail = (state) => {
     return updateObject(state,{loading:false});
 }
 
-const profilesReducer = (state = initialState, action) =>{
+const quizReducer = (state = initialState, action) =>{
     switch (action.type){
         case actionTypes.FETCH_DATA_START:return fetchDataStart(state);
         case actionTypes.FETCH_DATA_SUCCESS:return fetchDataSuccess(state,action);  
@@ -31,4 +33,4 @@ const profilesReducer = (state = initialState, action) =>{
     }
 }
 
-export default profilesReducer;
+export default quizReducer;

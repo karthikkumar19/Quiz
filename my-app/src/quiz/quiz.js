@@ -1,52 +1,67 @@
 import React,{Component} from 'react';
 import {Card,Button} from 'react-bootstrap';
 import classes from './quiz.module.css';
+import Layout from '../hoc/Layout/Layout';
+import {connect} from 'react-redux';
+import axios from 'axios';
+import Spinner from '../components/UI/Spinner/Spinner';
+import * as actions from '../store/actions/index';
+import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 
 class Quiz extends Component{
-  
-  state={
-    questions:[],
-    score:0,
-    disabled:false
-  }
+  constructor(props) {
+    console.log(props)
+    super(props);
+     this.state = {
+      questions: this.props.questions,
+      score:0,
+      disabled:false
+    }
+   }
+   componentWillReceiveProps(nextProps){
+    if(this.state.questions.length !== nextProps.questions.length){
+      this.setState({questions: nextProps.questions})
+      console.log('re')
+    }}
   
 componentDidMount(){
-    this.questions(this.props.data);
-    console.log(this.props.data)
+this.props.onFetchData();
+
+    // console.log(this.props.data)
 }
   
 
  
  questions = (data) => {
-    
-    
-   
     this.start(data);
 }
 start = (ques1) => {
     this.setState({questions:ques1})
 }
 
-onInputChange = (event,ind) => {
-    const { questions } = this.state;
-
-    const nexState = questions.map(question => {
-      if (question.QuestionName !== event.target.name) return question;
-      return {
-        ...question,
-        options: question.options.map(opt => {
-          const checked = opt.name === event.target.value;
-       
-          return {
-            ...opt,
-            selected: checked
-          }
-        })
-      }
-    });
-    this.setState({ questions: nexState })
+onInputChange = (event) => {
+  const  { questions }  = this.state;
+console.log(questions,event.target.name,event.target.value)
+  const nexState = questions.map(question => {
+    if (question.QuestionName !== event.target.name) return question;
+    return {
+      ...question,
+      options: question.options.map(opt => {
+        console.log('work')
+        const checked = opt.name === event.target.value;
+     
+        return {
+          ...opt,
+          selected: checked
+        }
+      })
+      
+    }
+  });
+  console.log(nexState)
+  this.setState({ questions: nexState })
 // console.log(this.state.score)
-  }
+}
 
 
    score = 0;
@@ -54,11 +69,9 @@ onInputChange = (event,ind) => {
   check = () => {
       this.state.questions.map((question) => {
           question.options.map((op)=>{
-            console.log(op)
               if(op.selected === true){
                 console.log(op.name)
                 if(op.name === question.answer ){
-                  console.log('corret')
                  this.score = this.score + 1;
               }else{
                 this.score = this.score;
@@ -77,11 +90,12 @@ this.setState({disabled:true})
 
     render(){
 
-       let disp = <h1>loading</h1>
-       let answer = <h1>hello</h1>
-       if(this.state.questions!=null){
+       let disp = <Spinner/>
+       if(!this.props.loading){
+        console.log(this.state.questions)
        let questions = this.state.questions;
         disp = questions.map((question,ind) => {
+          console.log(ind)
             return(
                 <div>
                   <Card className={classes.card}>
@@ -89,6 +103,7 @@ this.setState({disabled:true})
   <h3>{question.QuestionName}</h3>                  
                     {
                     question.options.map((lo, idx) => {
+                      console.log(lo.selected)
                       return (
                             <label  className={classes.radio}>
                           <input
@@ -98,7 +113,7 @@ this.setState({disabled:true})
                         name={question.QuestionName}
                         value={lo.name}
                         checked={lo.selected}
-                        onChange={(event) =>  this.onInputChange(event,ind)}
+                        onChange={(event) =>  this.onInputChange(event)}
                        
                       /> {lo.name}
                       </label>
@@ -117,17 +132,36 @@ this.setState({disabled:true})
 
 
 return(
-    
-            <div className={classes.main}>
+    <Layout>
+ <div className={classes.main}>
             <h1 className={classes.title}>Quiz</h1>
                {disp}
             <Button disabled={this.state.disabled}  variant="success" className={classes.button} 
              onClick={this.submit}>Submit</Button>
             <h1 className={classes.score}>{this.state.score}</h1>
             </div>
+    </Layout>
+           
         )
     }
    
 }
+const mapStateToProps = state => {
+  return{
+      questions:state.quizdata.questions,
+      loading:state.quizdata.loading,
+      fetched:state.quizdata.fetched,
+      // isAuthenticated: state.auth.token !== null
+       // token:state.auth.token,
+      // userId:state.auth.userId
+  }
+}
 
-export default Quiz;
+const mapDispatchToProps = dispatch => {
+  return{
+      onFetchData : () => dispatch(actions.fetchData()),
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps) (withErrorHandler(Quiz, axios)); 
+

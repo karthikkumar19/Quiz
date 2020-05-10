@@ -8,12 +8,12 @@ import './index.css';
 import thunk from 'redux-thunk';
 import App from './App';
 import authReducer from './store/reducers/auth';
-import profilesReducer from './store/reducers/profiles';
+import quizReducer from './store/reducers/quiz';
 
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
 const rootReducer = combineReducers({
   auth: authReducer,
-  prodata:profilesReducer
+  quizdata:quizReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(

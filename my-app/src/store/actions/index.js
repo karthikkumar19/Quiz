@@ -10,4 +10,4 @@ export {
 export{
     addData,
     fetchData
-    } from './profile';
+    } from './quiz';

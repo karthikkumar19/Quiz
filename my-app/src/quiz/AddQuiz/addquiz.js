@@ -1,12 +1,15 @@
 import * as React from 'react'
 import update from 'react-addons-update';
-// import axios from '../../axios_orders';
 // import Button from '../Components/UI/Button/button';
 import "bootstrap/dist/css/bootstrap.css";
+import {  Redirect } from 'react-router-dom';
 import {Button,InputGroup,FormControl} from 'react-bootstrap';
-// import Spinner from '../../components/UI/Spinner/Spinner';
-// import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import classes from '../AddQuiz/addquiz.module.css';
+import * as actions from '../../store/actions/index';
+import axios from 'axios';
+import {connect} from 'react-redux';
 class Addquiz extends React.Component{
 
 state={
@@ -31,7 +34,9 @@ const handleNo = event =>{
 }
 
 const handleSubmit = e => {
-    console.log(this.state)
+  e.preventDefault();
+    console.log(this.state);
+    this.props.onAddQuiz(this.state);
 }
     //Submit data method!!
     //   const handleSubmit = e => {
@@ -125,38 +130,46 @@ const handleSubmit = e => {
                )
            });
         
-
-
+           const fetchedRedirect = this.props.fetched ? <Redirect to='/' /> : null;
+           let form  = (
+             <div>
+             {fetchedRedirect}
+             <InputGroup className="mb-3">
+                 <InputGroup.Prepend>
+                   <InputGroup.Text id="basic-addon1">Question Name </InputGroup.Text>
+                 </InputGroup.Prepend>
+                 <FormControl name="question" type="text" value={this.state.QuestionName}
+                 onChange={(event) => handleNo(event)}
+                   placeholder="Enter Question"
+                   aria-describedby="basic-addon1"
+                 />
+               </InputGroup>
+                {name}
+                <div className="form-group col-sm-6">
+                 <label htmlFor="time">Answer</label>
+                 <input
+                   type="text"
+                   className="form-control"
+                   id="answer"
+                   name="answer"
+                   value={this.state.answer}
+                   onChange={event => handleNo( event)}
+                 />
+               </div>
+             <Button variant="success"
+             type="submit"
+             onClick={(event) => handleSubmit(event,this.state)}>
+             Save
+             </Button>     
+             </div>
+           )
+           if ( this.props.loading ) {
+            form = <Spinner />;
+        }
 return (
 <div className={classes.inputMain}>
-<h1>Add Stop Data</h1>
-<InputGroup className="mb-3">
-    <InputGroup.Prepend>
-      <InputGroup.Text id="basic-addon1">Question Name </InputGroup.Text>
-    </InputGroup.Prepend>
-    <FormControl name="question" type="text" value={this.state.QuestionName}
-    onChange={(event) => handleNo(event)}
-      placeholder="Enter Question"
-      aria-describedby="basic-addon1"
-    />
-  </InputGroup>
-   {name}
-   <div className="form-group col-sm-6">
-    <label htmlFor="time">Answer</label>
-    <input
-      type="text"
-      className="form-control"
-      id="answer"
-      name="answer"
-      value={this.state.answer}
-      onChange={event => handleNo( event)}
-    />
-  </div>
-<Button variant="success"
-type="submit"
-onClick={(event) => this.props.add(this.state)}>
-Save
-</Button>     
+<h1>Add Quiz Data</h1>
+{form}
 <pre>
  {JSON.stringify(this.state, null, 2)}
 </pre>
@@ -164,4 +177,19 @@ Save
   )
           }
         }
-        export default Addquiz;
+        const mapStateToProps = state =>{
+          return{
+              loading:state.auth.loading,
+              fetched:state.auth.fetched
+              // token: state.auth.token,
+              // userId:state.auth.userId
+          }
+      };
+      
+      const mapDispatchToProps = dispatch => {
+          return{
+              onAddQuiz : (quizData) => dispatch(actions.addData(quizData))
+          }
+      }
+        
+      export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Addquiz,axios));

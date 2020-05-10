@@ -1,46 +1,69 @@
-import React,{useState} from 'react';
-import Quiz from './quiz';
-import Addquiz from './AddQuiz/addquiz';
+import React,{useState,Component} from 'react';
+import Layout from '../hoc/Layout/Layout';
+import * as actions from '../store/actions/index';
+import {connect} from 'react-redux';
+import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
+import axios from 'axios';
 
-const Home = props => {
+class Home extends Component {
+    render(){
+        const onPage = e => {
+            console.log(this.props.isAuthenticated)
+            if(!this.props.isAuthenticated){
+                if(e.target.name === 'quiz'){
+                    this.props.onSetAuthRedirectPath('/quiz');
+                    this.props.history.push('/auth')
+                }
+                else{
+                    this.props.onSetAuthRedirectPath('/add');
+                    this.props.history.push('/auth')
+                }
+            }else{
+                if(e.target.name === 'quiz'){
+                    this.props.history.push('/quiz') 
+                }else{
+                    this.props.history.push('/add')
+                }
+            }
+            
+          }
+        
+            return(
+                <div>
+                    <Layout>
+         <button onClick={(e) => onPage(e)} name="quiz" >  Quiz</button>
+         <button >  Add Quiz</button>
+        
+         
+                
+                </Layout>
+                </div>
+               
+        
+            )
+        }
+    }
+    
 
-const [toogle,setToogle] = useState(false);
-const [questions,setQuestions] = useState([
-    {
-        QuestionName: 'who is the founder of apple?', options: [{ name: 'Mark', selected: false},
-        { name: 'stevejobs', selected: false }], answer:'stevejobs'
-      },
-      {
-          QuestionName: 'who is the founder of tesla?', options: [{ name: 'Musk', selected: false},
-          { name: 'gates', selected: false }], answer:'Musk'
-        },
-]);
-// const [score,setScore] = useState(0);
-// const [disabled,setDisabled] = useState(false)
+
+
    
-const addquiz = question => {
-    setQuestions([...questions,question]);
-    setToogle(!toogle);
-}
+
   
-let name = <Quiz data={questions}/>
-if(toogle){
- name = <Addquiz add={addquiz} />
+
+
+
+
+const mapStateToProps = state => {
+    return{
+        isAuthenticated: state.auth.token !== null
+    };
 }
 
-const toggle = e => {
-    e.preventDefault();
-   setToogle(!toogle);
-  }
-
-    return(
-        <div>
- {name}
-        <button onClick={toggle}>{toogle ? 'Quiz' : 'Add Quiz'}</button>
-        </div>
-       
-
-    )
+const mapDispatchToProps = dispatch => {
+    return{
+        onSetAuthRedirectPath : (path) => dispatch(actions.setAuthRedirectPath(path))
+    }
 }
 
-export default Home;
+export default connect(mapStateToProps,mapDispatchToProps) (withErrorHandler( Home, axios ));

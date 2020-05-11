@@ -85,3 +85,31 @@ export const fetchProfile = (token, userId) => {
             });
     }
 }
+
+
+
+
+
+
+export const fetchProfiles = () => {
+    return dispatch => {
+        dispatch(fetchProfileStart());
+        // const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('https://quiz-4cf36.firebaseio.com/profile.json'  )
+            .then(res => {
+                const fetchedData = [];
+                for (let key in res.data) {
+                    fetchedData.push({
+                        ...res.data[key],
+                        id: key
+                    });
+                }
+               
+               
+                dispatch(fetchProfileSuccess(fetchedData));
+            })
+            .catch(err => {
+                dispatch(fetchProfileFail(err));
+            });
+    }
+}

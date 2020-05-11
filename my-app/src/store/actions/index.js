@@ -15,5 +15,6 @@ export{
 
     export{
         addProfile,
-        fetchProfile
+        fetchProfile,
+        fetchProfiles
     }from './profile';

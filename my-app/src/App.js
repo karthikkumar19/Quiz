@@ -26,6 +26,14 @@ const asyncQuiz = asyncComponent(() => {
   return import ('./quiz/quiz');
 })
 
+const asyncQuizes = asyncComponent(() => {
+  return import ('./quiz/Quizes/quizes');
+})
+
+const asyncScores = asyncComponent(() => {
+  return import ('./quiz/Scores/scores');
+})
+
 class App extends React.Component  {
 
   
@@ -39,6 +47,7 @@ render(){
     <Switch>
             <Route path="/auth" component={Auth} />
       <Route path="/" exact component={asyncHome}  />
+      <Route path="/add" exact component={asyncAdd} />
       <Redirect to="/" />
     </Switch>
   );
@@ -46,11 +55,13 @@ render(){
   if ( this.props.isAuthenticated ) {
     routes = (
       <Switch>
+        <Route path="/quizes" exact component={asyncQuizes}></Route>
               <Route path="/quiz" exact component={asyncQuiz}/> 
         <Route path="/user" component={asyncUser}/>
          <Route path="/logout" component={Logout} />
           <Route path="/auth" component={Auth} />
         <Route path="/" exact component={Auth}  />
+        <Route path="/scores" exact component={asyncScores} />
        <Route path="/add" exact component={asyncAdd} />
       <Redirect to="/" />
       </Switch>

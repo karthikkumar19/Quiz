@@ -123,9 +123,14 @@ class Addpro extends Component {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
         }
         console.log(formData);
+        let score = {
+            score:0,
+            submitted:false
+        }
         const profile = {
             formData:formData,
-            userId:this.props.userId
+            userId:this.props.userId,
+            score:score
         }
         this.props.onAddData(profile,this.props.token);
             

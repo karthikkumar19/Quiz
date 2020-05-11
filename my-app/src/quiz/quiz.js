@@ -7,6 +7,7 @@ import axios from 'axios';
 import Spinner from '../components/UI/Spinner/Spinner';
 import * as actions from '../store/actions/index';
 import {Redirect} from 'react-router-dom';
+import Timer from './Timer/timer';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 
 class Quiz extends Component{
@@ -73,7 +74,7 @@ console.log(questions,event.target.name,event.target.value)
           question.options.map((op)=>{
               if(op.selected === true){
                 console.log(op.name)
-                if(op.name === question.answer ){
+                if(op.name == question.answer ){
                  this.score = this.score + 1;
               }else{
                 this.score = this.score;
@@ -88,7 +89,7 @@ console.log(questions,event.target.name,event.target.value)
       this.check();
       console.log(this.props.profile[0].id)
       let score ={
-        score:this.state.score,
+        score:this.score,
         submitted:true
       }
       this.props.onAddScore(this.props.profile[0].id,score);
@@ -142,6 +143,7 @@ return(
     <Layout>
  <div className={classes.main}>
             <h1 className={classes.title}>Quiz</h1>
+            <Timer submit={this.submit}/>
                {disp}
                {updatedRedirect}
             <Button disabled={this.state.disabled}  variant="success" className={classes.button} 

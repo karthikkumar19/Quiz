@@ -1,15 +1,14 @@
-import React,{useState,Component} from 'react';
+import React,{Component} from 'react';
 import Layout from '../../hoc/Layout/Layout';
 import * as actions from '../../store/actions/index';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from 'axios';
 import Modal from '../../components/UI/Modal/Modal';
-import spinner from '../../components/UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import Addpro from '../Addprofile/addpro';
 import Confirm from '../confirm/confirm';
-import { Spinner } from 'react-bootstrap';
+import Admin from '../Admin/admin';
 
 class User extends Component {
 
@@ -65,20 +64,25 @@ this.props.history.push('/quiz');
 
           if(!this.props.loading){
               console.log(this.props.profile)
-         user=   this.props.profile.map((pro) => {
-             console.log(pro)
-                return(
-                   
-                    <div>
-                    <h3>Name:- {pro.formData.name}</h3>
-                            {pro.score.submitted ? <h1>you already submitted</h1> : null}
-                            <button disabled={pro.score.submitted} onClick={this.quizHandler}>Continue</button>
-                            <button>Logout</button>  
-                            
-                                   </div>
-                )
-                
-            })
+              if(this.props.isAdmin){
+                  user = <Admin profile={this.props.profile}/>
+              }else{
+                user=   this.props.profile.map((pro) => {
+                    console.log(pro)
+                       return(
+                          
+                           <div>
+                           <h3>Name:- {pro.formData.name}</h3>
+                                   {pro.score.submitted ? <h1>your Answer is submitted</h1> : null}
+                                   <button disabled={pro.score.submitted} onClick={this.quizHandler}>Continue</button>
+                                   <button>Logout</button>  
+                                   
+                                          </div>
+                       )
+                       
+                   })
+              }
+        
             
 
         }
@@ -129,7 +133,8 @@ const mapStateToProps = state => {
         form: state.auth.form ,
         fetched : state.auth.fetched,
         authRedirectPath: state.profile.authRedirectPath,
-        profile: state.profile.profile
+        profile: state.profile.profile,
+        isAdmin : state.auth.userId === '2OCao2w0T9WZGKbYgL7yplDyxtp1'
     };
 }
 

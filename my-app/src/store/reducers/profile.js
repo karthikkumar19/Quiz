@@ -29,6 +29,7 @@ const profileReducer = (state = initialState, action) =>{
         case actionTypes.FETCH_PROFILE_START:return fetchProfileStart(state);
         case actionTypes.FETCH_PROFILE_SUCCESS:return fetchProfileSuccess(state,action);  
         case actionTypes.FETCH_PROFILE_FAIL:return fetchProfileFail(state);
+       
         default :
         return state;
     }

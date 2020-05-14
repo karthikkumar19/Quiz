@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import Auth from './quiz/Auth/Auth';
 import Logout from './quiz/Auth/Logout/Logout';
 import asyncComponent from './hoc/asyncComponent/asynComponent';
+import Timer from '../src/quiz/Timer/timer';
 
 import './App.css';
 
@@ -48,6 +49,7 @@ render(){
             <Route path="/auth" component={Auth} />
       <Route path="/" exact component={asyncHome}  />
       <Route path="/add" exact component={asyncAdd} />
+
       <Redirect to="/" />
     </Switch>
   );

@@ -1,11 +1,13 @@
 import React,{Component} from 'react';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from 'axios';
 
 class Timer extends Component {
 
 
     constructor() {
         super();
-        this.state = { time: {}, seconds: 20 };
+        this.state = { time: {}, seconds: 120 };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
@@ -33,6 +35,8 @@ componentDidMount(){
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
     this.startTimer();
+    console.log(this.props)
+
     // setInterval(this.updateCountdown,1000);
 
 }
@@ -79,7 +83,17 @@ startTimer() {
          alert('time up!')
      }
 
- 
+     startTimer() {
+   
+      if (this.timer == 0 && this.state.seconds > 0) {
+          this.timer = setInterval(this.countDown, 1000);
+      }
+      
+    }
+    
+  
+      
+      
 
     render(){
      
@@ -93,4 +107,4 @@ startTimer() {
     }
 }
 
-export default Timer;
+export default withErrorHandler(Timer,axios);

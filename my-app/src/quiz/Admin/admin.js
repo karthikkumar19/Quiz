@@ -8,11 +8,11 @@ class Admin extends Component{
 
     render(){
 
-let admin = this.props.profile.map((pro) => {
+let admin = this.props.profile.map((pro,ind) => {
     console.log(pro)
        return(
           
-           <div>
+           <div key={ind}>
            <h3>Welcome {pro.formData.name}</h3>
                       </div>
        )

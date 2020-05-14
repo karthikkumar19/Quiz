@@ -4,24 +4,39 @@ import * as actions from '../../store/actions/index';
 import {connect} from 'react-redux';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from 'axios';
+import {Button} from 'react-bootstrap';
 import Modal from '../../components/UI/Modal/Modal';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Addpro from '../Addprofile/addpro';
 import Confirm from '../confirm/confirm';
 import Admin from '../Admin/admin';
-
+import classes from './user.module.css';
+import Input from './input';
 class User extends Component {
 
     componentDidMount(){
         this.props.onFetchProfile(this.props.token,this.props.userId);
-        console.log(this.props.profile,this.props.form)
-        
+        console.log(this.props.profile,this.props.form);
+        console.log(this.props.fetched)
+
+        // if(this.props.fetched){
+        //     this.props.onSetAuthRedirectPath('/quiz')
+        // }else{
+        //     this.props.onSetAuthRedirectPath('/user')
+        // }
+    //   if( this.state.quiz){
+        // this.props.history.replace({ pathname: '/quiz' })
+    //   }  
     }
-    
+   
 state={
     continue:false,
-    profile:[]
+    profile:[],
+    score:false,
+    quiz:false
 }
+
+
 
 quizHandler = () => {
           console.log('clcik')
@@ -36,26 +51,12 @@ quizContinueHandler = () => {
 this.props.history.push('/quiz');
 };
 
+viewScore = () => {
+this.setState({score:true})
+}
+
     render(){
-        // const onPage = e => {
-        //     console.log(this.props.isAuthenticated)
-        //     if(!this.props.isAuthenticated){
-        //         if(e.target.name === 'quiz'){
-        //             this.props.onSetAuthRedirectPath('/quiz');
-        //             this.props.history.push('/auth')
-        //         }
-        //         else{
-        //             this.props.onSetAuthRedirectPath('/add');
-        //             this.props.history.push('/auth')
-        //         }
-        //     }else{
-        //         if(e.target.name === 'quiz'){
-        //             this.props.history.push('/quiz') 
-        //         }else{
-        //             this.props.history.push('/add')
-        //         }
-        //     }
-            
+      
           
          
             let user = <Spinner/>
@@ -63,21 +64,44 @@ this.props.history.push('/quiz');
           confirm = <Confirm continue={this.quizContinueHandler} cancel={this.quizCancelHandler} />
 
           if(!this.props.loading){
-              console.log(this.props.profile)
               if(this.props.isAdmin){
                   user = <Admin profile={this.props.profile}/>
               }else{
-                user=   this.props.profile.map((pro) => {
+                user=   this.props.profile.map((pro,ind) => {
                     console.log(pro)
                        return(
-                          
-                           <div>
-                           <h3>Name:- {pro.formData.name}</h3>
+                         
+                           <div key={ind}>
+                           <h3>Welcome {pro.formData.name} !!</h3>
                                    {pro.score.submitted ? <h1>your Answer is submitted</h1> : null}
-                                   <button disabled={pro.score.submitted} onClick={this.quizHandler}>Continue</button>
-                                   <button>Logout</button>  
-                                   
-                                          </div>
+                                   <div className={classes.details}>
+                                    
+                                       
+                                            <Input  value="Name">{pro.formData.name}</Input>
+                                            <Input  value="Collge name">{pro.formData.collegeName}</Input>
+                                            <Input  value="Department">{pro.formData.dept}</Input>
+                                            <Input  value="Current year">{pro.formData.year}</Input>
+                                            <Input  value="E-mail">{pro.formData.email}</Input>
+                                            <Input  value="Ph-no">{pro.formData.phno}</Input>
+                                   <div className={classes.button}>
+                                   <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button>
+                                   <Button variant="info" onClick={this.viewScore} >View Score</Button>  
+                                   </div>  
+                                   </div>
+                                   {(() => {
+        if (this.state.score) {
+            if(pro.score.submitted){
+          return (
+            <h3 className={classes.score}>Your Score is {pro.score.score} and Total time taken :- {pro.score.Totaltime}</h3>
+          )
+            }else{
+                return(
+<h3 className={classes.score}>Please attend the quiz to View Score</h3>
+                )  
+            }
+        } 
+      })()}       
+        </div>
                        )
                        
                    })
@@ -92,15 +116,17 @@ this.props.history.push('/quiz');
                     console.log(this.props.form)
                     user = <Addpro/>
                 }
-                // let authRedirect = null;
+                let quizRedirect = null;
+
                 // if(this.props.fetched){
-                //     authRedirect = <Redirect to='/quiz' />
+                //     console.log(this.props.fetched)
+                //     quizRedirect = <Redirect to='/quiz' />
                 // }
             
             return(
-                <div>
+                <div className={classes.main}>
                     <Layout>
-                        {/* {authRedirect} */}
+                        {quizRedirect}
         {user}
          <Modal show={this.state.continue} modalClosed={this.cancel}>
              {confirm}
@@ -131,8 +157,8 @@ const mapStateToProps = state => {
         loading:state.profile.loading,
         userId:state.auth.userId,
         form: state.auth.form ,
-        fetched : state.auth.fetched,
-        authRedirectPath: state.profile.authRedirectPath,
+        fetched : state.quizdata.fetched,
+        authRedirectPath: state.auth.authRedirectPath,
         profile: state.profile.profile,
         isAdmin : state.auth.userId === '2OCao2w0T9WZGKbYgL7yplDyxtp1'
     };

@@ -4,7 +4,7 @@ import {updateObject} from '../../shared/utility';
 const initialState = {
     questions:[],
     loading:false,
-    fetched:false
+    fetched:false,
 }
 
 

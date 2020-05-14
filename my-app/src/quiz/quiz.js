@@ -7,8 +7,9 @@ import axios from 'axios';
 import Spinner from '../components/UI/Spinner/Spinner';
 import * as actions from '../store/actions/index';
 import {Redirect} from 'react-router-dom';
-import Timer from './Timer/timer';
+import {Helmet} from 'react-helmet';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
+import Timer from './Timer/timer';
 
 class Quiz extends Component{
   constructor(props) {
@@ -18,21 +19,59 @@ class Quiz extends Component{
       questions: this.props.questions,
       score:0,
       disabled:false,
-      submitted:false
-    }
+      submitted:false,
+      startSec:0
+     }
+    
    }
+
+  
    componentWillReceiveProps(nextProps){
     if(this.state.questions.length !== nextProps.questions.length){
       this.setState({questions: nextProps.questions})
-      console.log('re')
+      console.log('re');
     }}
+
+  //   componentWillUnmount() {
+  //     this.props.history.goForward();
+  // }
+  
+
   
 componentDidMount(){
 this.props.onFetchData();
-
-    console.log(this.state.questions)
-}
+    console.log(this.state.questions);
+    this.startTimer();
+    window.onbeforeunload = function() {
+      return "if you reload you have to attend the Test from first!"
+   };
   
+   console.log(this.props)
+}
+
+componentWillUnmount(){
+  console.log("unmourn")
+}
+componentDidUpdate(){
+  window.history.pushState(null, "", window.location.href);
+  window.onpopstate = function () {
+      window.history.pushState(null, "", window.location.href);
+  };
+    }
+
+startTimer = () => {
+  var dat = new Date().toLocaleTimeString();
+  this.setState({startSec:this.hourTosec(dat)})
+}
+  hourTosec(dat){
+    var a = dat.split(':'); // split it at the colons
+
+    // minutes are worth 60 seconds. Hours are worth 60 minutes.
+    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+    console.log(seconds);
+    return seconds;
+  }
+
 
  
  questions = (data) => {
@@ -44,7 +83,7 @@ start = (ques1) => {
 
 onInputChange = (event) => {
   const  { questions }  = this.state;
-console.log(questions,event.target.name,event.target.value)
+console.log(questions,event.target.name,event.target.value,this.props.fetched)
   const nexState = questions.map(question => {
     if (question.QuestionName !== event.target.name) return question;
     return {
@@ -68,6 +107,7 @@ console.log(questions,event.target.name,event.target.value)
 
 
    score = 0;
+finishsec = 0;
 
   check = () => {
       this.state.questions.map((question) => {
@@ -82,15 +122,35 @@ console.log(questions,event.target.name,event.target.value)
             }
           })
       })
-      this.setState({score: this.score})
+     
+      // this.setState({score: this.score})
   }
 
+  convertTime(sec) {
+    var hours = Math.floor(sec/3600);
+    (hours >= 1) ? sec = sec - (hours*3600) : hours = '00';
+    var min = Math.floor(sec/60);
+    (min >= 1) ? sec = sec - (min*60) : min = '00';
+    (sec < 1) ? sec='00' : void 0;
+
+    (min.toString().length == 1) ? min = '0'+min : void 0;    
+    (sec.toString().length == 1) ? sec = '0'+sec : void 0;    
+
+    return hours+':'+min+':'+sec;
+}
+
+totalTime = 0;
   submit = () => {
       this.check();
-      console.log(this.props.profile[0].id)
+      var dat = new Date().toLocaleTimeString();
+      this.finishsec = this.hourTosec(dat);
+      let difftime = this.finishsec - this.state.startSec;
+      this.totalTime = this.convertTime(difftime);
+      console.log(this.totalTime)
       let score ={
         score:this.score,
-        submitted:true
+        submitted:true,
+        Totaltime:this.totalTime
       }
       this.props.onAddScore(this.props.profile[0].id,score);
   }
@@ -99,7 +159,7 @@ console.log(questions,event.target.name,event.target.value)
 
        let disp = <Spinner/>
        if(!this.props.loading){
-        console.log(this.state.questions)
+        console.log(this.state.questions,this.state.hour,this.state.min,this.state.sec)
        let questions = this.state.questions;
         disp = questions.map((question,ind) => {
           console.log(ind)
@@ -142,8 +202,10 @@ console.log(questions,event.target.name,event.target.value)
 return(
     <Layout>
  <div className={classes.main}>
+  
             <h1 className={classes.title}>Quiz</h1>
-            <Timer submit={this.submit}/>
+           
+            <Timer  submit={this.submit}/>
                {disp}
                {updatedRedirect}
             <Button disabled={this.state.disabled}  variant="success" className={classes.button} 

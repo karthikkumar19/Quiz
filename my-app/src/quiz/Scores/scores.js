@@ -20,14 +20,14 @@ componentDidMount(){
         if(!this.props.loading){
             let profiles = this.props.profile;
             profilee = profiles.map((profile,ind) => {
-              console.log(profile)
                 return(
-                    <div>
+                    <div key={ind}>
                       <Card className={classes.card}>
       <Card.Body>
                         <h3>{profile.formData.name}</h3>
                         <h5>{profile.formData.email}</h5>
                         <h6>Score:- {profile.score.score}</h6>
+                        <h6>Time taken:-{profile.score.Totaltime}</h6>
       </Card.Body>
     </Card>
                        

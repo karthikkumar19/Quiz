@@ -1,6 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
+
 .main{
     width: 60%;
-   
     margin: auto;
     margin-top: 5%;
     text-align: center;
@@ -31,4 +32,8 @@
 
 .rule{
     text-align: left
+}
+
+.welcome{
+    font-family: 'Balsamiq Sans', cursive;
 }

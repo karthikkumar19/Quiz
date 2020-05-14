@@ -16,17 +16,9 @@ class User extends Component {
 
     componentDidMount(){
         this.props.onFetchProfile(this.props.token,this.props.userId);
-        console.log(this.props.profile,this.props.form);
-        console.log(this.props.fetched)
-
-        // if(this.props.fetched){
-        //     this.props.onSetAuthRedirectPath('/quiz')
-        // }else{
-        //     this.props.onSetAuthRedirectPath('/user')
-        // }
-    //   if( this.state.quiz){
-        // this.props.history.replace({ pathname: '/quiz' })
-    //   }  
+        this.props.onfetchQuiz();
+       
+        
     }
    
 state={
@@ -39,7 +31,6 @@ state={
 
 
 quizHandler = () => {
-          console.log('clcik')
     this.setState( { continue: true } );
 }
 
@@ -65,14 +56,13 @@ this.setState({score:true})
 
           if(!this.props.loading){
               if(this.props.isAdmin){
-                  user = <Admin profile={this.props.profile}/>
+                  user = <Admin profile={this.props.profile} />
               }else{
                 user=   this.props.profile.map((pro,ind) => {
-                    console.log(pro)
                        return(
                          
                            <div key={ind}>
-                           <h3>Welcome {pro.formData.name} !!</h3>
+                           <h3 className={classes.welcome}>Welcome {pro.formData.name} !!</h3>
                                    {pro.score.submitted ? <h1>your Answer is submitted</h1> : null}
                                    <div className={classes.details}>
                                     
@@ -113,18 +103,15 @@ this.setState({score:true})
            
 
                 if(this.props.form){
-                    console.log(this.props.form)
                     user = <Addpro/>
                 }
                 let quizRedirect = null;
 
-                // if(this.props.fetched){
-                //     console.log(this.props.fetched)
-                //     quizRedirect = <Redirect to='/quiz' />
-                // }
+               
             
             return(
                 <div className={classes.main}>
+                     
                     <Layout>
                         {quizRedirect}
         {user}
@@ -160,6 +147,7 @@ const mapStateToProps = state => {
         fetched : state.quizdata.fetched,
         authRedirectPath: state.auth.authRedirectPath,
         profile: state.profile.profile,
+        quiz:state.quizdata.questions,
         isAdmin : state.auth.userId === '2OCao2w0T9WZGKbYgL7yplDyxtp1'
     };
 }
@@ -167,7 +155,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return{
         onFetchProfile : (token,userId) => dispatch(actions.fetchProfile(token,userId)),
-        onSetAuthRedirectPath : (path) => dispatch(actions.setAuthRedirectPath(path))
+        onSetAuthRedirectPath : (path) => dispatch(actions.setAuthRedirectPath(path)),
+        onfetchQuiz : () => () => dispatch(actions.fetchData())
     }
 }
 

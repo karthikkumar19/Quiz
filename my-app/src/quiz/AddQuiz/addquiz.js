@@ -1,8 +1,8 @@
 import * as React from 'react'
 import update from 'react-addons-update';
-// import Button from '../Components/UI/Button/button';
 import "bootstrap/dist/css/bootstrap.css";
-import {  Redirect } from 'react-router-dom';
+import Layout from '../../hoc/Layout/Layout';
+// import {  Redirect } from 'react-router-dom';
 import {Button,InputGroup,FormControl} from 'react-bootstrap';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
@@ -130,10 +130,9 @@ const handleSubmit = e => {
                )
            });
         
-           const fetchedRedirect = this.props.fetched ? <Redirect to='/' /> : null;
+          //  const fetchedRedirect = this.props.added ? <Redirect to='/' /> : null;
            let form  = (
              <div>
-             {fetchedRedirect}
              <InputGroup className="mb-3">
                  <InputGroup.Prepend>
                    <InputGroup.Text id="basic-addon1">Question Name </InputGroup.Text>
@@ -168,11 +167,15 @@ const handleSubmit = e => {
         }
 return (
 <div className={classes.inputMain}>
-<h1>Add Quiz Data</h1>
+
+  <Layout>
+  <h1>Add Quiz Data</h1>
 {form}
 <pre>
  {JSON.stringify(this.state, null, 2)}
 </pre>
+  </Layout>
+
 </div>
   )
           }
@@ -180,7 +183,6 @@ return (
         const mapStateToProps = state =>{
           return{
               loading:state.auth.loading,
-              fetched:state.auth.fetched
               // token: state.auth.token,
               // userId:state.auth.userId
           }

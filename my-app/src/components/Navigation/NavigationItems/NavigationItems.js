@@ -7,8 +7,11 @@ import NavigationItem from './NavigationItem/NavigationItem';
 const navigationItems = (props) => (
     <ul className={classes.NavigationItems}>
         {
-            !props.isAuthenticated ? <NavigationItem link="/auth">Admin</NavigationItem> 
-            : <NavigationItem link="/logout">Logout</NavigationItem>
+          
+            props.isAuthenticated ? <NavigationItem link="/">Dashboard</NavigationItem> : null
+        } {
+          
+            props.isAuthenticated ? <NavigationItem link="/logout">Logout</NavigationItem> : null
         }
     </ul>
 );

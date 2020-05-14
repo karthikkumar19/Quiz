@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-// import Button from '../Components/UI/Button/button';
 import {connect} from 'react-redux';
 import {  Redirect } from 'react-router-dom';
+import {Button} from 'react-bootstrap';
 import classes from './addprofile.module.css';
-// import axios from '../axios-orders';
 import axios from 'axios';
 import Input from '../../components/UI/Input/input';
 import * as actions from '../../store/actions/index';
@@ -112,7 +111,8 @@ class Addpro extends Component {
                 valid: false,
                 touched: false
             },
-        }
+        },
+        formIsValid:false
     }
 
     orderHandler = ( event ) => {
@@ -170,8 +170,8 @@ class Addpro extends Component {
             <div >
             {updatedRedirect}
             <form  onSubmit={this.orderHandler}>
-                {formElementsArray.map(formElement => (
-                    <div >
+                {formElementsArray.map((formElement,ind) => (
+                    <div key={ind} >
                     <Input 
                         key={formElement.id}
                         elementType={formElement.config.elementType}
@@ -183,7 +183,7 @@ class Addpro extends Component {
                         changed={(event) => this.inputChangedHandler(event, formElement.id)} />
                         </div>
                 ))}
-                <button btnType="Success" >SUBMIT</button>
+                <Button variant="info" onClick={this.orderHandler}  disabled={!this.state.formIsValid} >SUBMIT</Button>
             </form>
             </div>
         );
@@ -192,7 +192,8 @@ class Addpro extends Component {
         }
         return (
             <div className={classes.PageData}>
-                <h4>Add Participiant data</h4>
+              
+                <h4>Add Participant data</h4>
                 {form}
                 
             </div>

@@ -7,13 +7,11 @@ import axios from 'axios';
 import Spinner from '../components/UI/Spinner/Spinner';
 import * as actions from '../store/actions/index';
 import {Redirect} from 'react-router-dom';
-import {Helmet} from 'react-helmet';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import Timer from './Timer/timer';
 
 class Quiz extends Component{
   constructor(props) {
-    console.log(props)
     super(props);
      this.state = {
       questions: this.props.questions,
@@ -26,10 +24,9 @@ class Quiz extends Component{
    }
 
   
-   componentWillReceiveProps(nextProps){
+   UNSAFE_componentWillReceiveProps(nextProps){
     if(this.state.questions.length !== nextProps.questions.length){
       this.setState({questions: nextProps.questions})
-      console.log('re');
     }}
 
   //   componentWillUnmount() {
@@ -40,18 +37,14 @@ class Quiz extends Component{
   
 componentDidMount(){
 this.props.onFetchData();
-    console.log(this.state.questions);
     this.startTimer();
     window.onbeforeunload = function() {
       return "if you reload you have to attend the Test from first!"
    };
   
-   console.log(this.props)
 }
 
-componentWillUnmount(){
-  console.log("unmourn")
-}
+
 componentDidUpdate(){
   window.history.pushState(null, "", window.location.href);
   window.onpopstate = function () {
@@ -68,7 +61,6 @@ startTimer = () => {
 
     // minutes are worth 60 seconds. Hours are worth 60 minutes.
     var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
-    console.log(seconds);
     return seconds;
   }
 
@@ -83,13 +75,11 @@ start = (ques1) => {
 
 onInputChange = (event) => {
   const  { questions }  = this.state;
-console.log(questions,event.target.name,event.target.value,this.props.fetched)
   const nexState = questions.map(question => {
     if (question.QuestionName !== event.target.name) return question;
     return {
       ...question,
       options: question.options.map(opt => {
-        console.log('work')
         const checked = opt.name === event.target.value;
      
         return {
@@ -100,7 +90,6 @@ console.log(questions,event.target.name,event.target.value,this.props.fetched)
       
     }
   });
-  console.log(nexState)
   this.setState({ questions: nexState })
 // console.log(this.state.score)
 }
@@ -113,8 +102,7 @@ finishsec = 0;
       this.state.questions.map((question) => {
           question.options.map((op)=>{
               if(op.selected === true){
-                console.log(op.name)
-                if(op.name == question.answer ){
+                if(op.name === question.answer ){
                  this.score = this.score + 1;
               }else{
                 this.score = this.score;
@@ -133,8 +121,8 @@ finishsec = 0;
     (min >= 1) ? sec = sec - (min*60) : min = '00';
     (sec < 1) ? sec='00' : void 0;
 
-    (min.toString().length == 1) ? min = '0'+min : void 0;    
-    (sec.toString().length == 1) ? sec = '0'+sec : void 0;    
+    (min.toString().length === 1) ? min = '0'+min : void 0;    
+    (sec.toString().length === 1) ? sec = '0'+sec : void 0;    
 
     return hours+':'+min+':'+sec;
 }
@@ -146,7 +134,6 @@ totalTime = 0;
       this.finishsec = this.hourTosec(dat);
       let difftime = this.finishsec - this.state.startSec;
       this.totalTime = this.convertTime(difftime);
-      console.log(this.totalTime)
       let score ={
         score:this.score,
         submitted:true,
@@ -159,20 +146,17 @@ totalTime = 0;
 
        let disp = <Spinner/>
        if(!this.props.loading){
-        console.log(this.state.questions,this.state.hour,this.state.min,this.state.sec)
        let questions = this.state.questions;
         disp = questions.map((question,ind) => {
-          console.log(ind)
             return(
-                <div>
+                <div key={ind}>
                   <Card className={classes.card}>
   <Card.Body>
   <h3>{question.QuestionName}</h3>                  
                     {
                     question.options.map((lo, idx) => {
-                      console.log(lo.selected)
                       return (
-                            <label  className={classes.radio}>
+                            <label key={idx}  className={classes.radio}>
                           <input
                         key={idx}
                         type="radio"
@@ -201,6 +185,7 @@ totalTime = 0;
 
 return(
     <Layout>
+     
  <div className={classes.main}>
   
             <h1 className={classes.title}>Quiz</h1>
@@ -225,9 +210,7 @@ const mapStateToProps = state => {
       fetched:state.quizdata.fetched,
       profile:state.profile.profile,
       updated:state.quizdata.updated
-      // isAuthenticated: state.auth.token !== null
-       // token:state.auth.token,
-      // userId:state.auth.userId
+     
   }
 }
 

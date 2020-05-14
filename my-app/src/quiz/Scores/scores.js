@@ -39,6 +39,7 @@ componentDidMount(){
 
         return(
             <Layout>
+               
  <div className={classes.main}>
                {profilee}
             </div>

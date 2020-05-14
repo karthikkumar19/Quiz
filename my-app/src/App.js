@@ -5,9 +5,7 @@ import {connect} from 'react-redux';
 import Auth from './quiz/Auth/Auth';
 import Logout from './quiz/Auth/Logout/Logout';
 import asyncComponent from './hoc/asyncComponent/asynComponent';
-import Timer from '../src/quiz/Timer/timer';
 
-import './App.css';
 
 
 
@@ -74,10 +72,8 @@ render(){
 
 
   return(
-    <div >
-       {/* <Helmet>
-                <style>{'body { background: #5D5F71;  }'}</style>
-            </Helmet> */}
+    <div  >
+       
     
             {routes}
  </div>

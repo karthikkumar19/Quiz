@@ -84,6 +84,21 @@ export const fetchData = (token, userId) => {
     }
 }
 
+export const deleteQuiz = (id) => {
+    console.log(id)
+    return dispatch => {
+        axios.delete('https://quiz-4cf36.firebaseio.com/quiz/'+ id + '.json')
+        .then(() => {
+            dispatch(fetchData());
+        })
+            
+    
+        .catch(err => {
+            dispatch(fetchDataFail(err));
+        });
+    }
+}
+
 export const addScoreSuccess = (id, scoreData) => {
     return{
         type:actionTypes.ADD_SCORE_SUCCESS,

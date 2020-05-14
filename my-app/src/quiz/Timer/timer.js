@@ -7,7 +7,7 @@ class Timer extends Component {
 
     constructor() {
         super();
-        this.state = { time: {}, seconds: 120 };
+        this.state = { time: {}, seconds: 600 };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
@@ -35,7 +35,6 @@ componentDidMount(){
     let timeLeftVar = this.secondsToTime(this.state.seconds);
     this.setState({ time: timeLeftVar });
     this.startTimer();
-    console.log(this.props)
 
     // setInterval(this.updateCountdown,1000);
 
@@ -43,7 +42,7 @@ componentDidMount(){
 
 startTimer() {
    
-    if (this.timer == 0 && this.state.seconds > 0) {
+    if (this.timer === 0 && this.state.seconds > 0) {
         this.timer = setInterval(this.countDown, 1000);
     }
     
@@ -58,7 +57,7 @@ startTimer() {
         });
         
         // Check if we're at zero.
-        if (seconds == 0) { 
+        if (seconds === 0) { 
             console.log('w')
           clearInterval(this.timer);
           this.props.submit();
@@ -83,13 +82,7 @@ startTimer() {
          alert('time up!')
      }
 
-     startTimer() {
-   
-      if (this.timer == 0 && this.state.seconds > 0) {
-          this.timer = setInterval(this.countDown, 1000);
-      }
-      
-    }
+     
     
   
       

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&display=swap');
+
 .main{
     width: 60%;
     margin-top: 50px;
@@ -6,6 +8,10 @@
 
 .card{
     margin-top: 10px;
+}
+
+.card h1,h4{
+    font-family: 'Jost', sans-serif;
 }
 
 .radio{
@@ -37,3 +43,13 @@
 .Option{
     padding-left: 10px;
 }
+
+.trash{
+    float: right;
+    font-size: 30px;
+}
+
+.trash:hover{
+    color:red
+}
+

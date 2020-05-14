@@ -85,7 +85,6 @@ export const fetchData = (token, userId) => {
 }
 
 export const deleteQuiz = (id) => {
-    console.log(id)
     return dispatch => {
         axios.delete('https://quiz-4cf36.firebaseio.com/quiz/'+ id + '.json')
         .then(() => {

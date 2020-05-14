@@ -18,7 +18,6 @@ const authStart = (state, action) => {
 };
 
 const authSuccess = (state, action) => {
-    console.log(action.redirectPath)
     return updateObject(state,{
         token:action.idToken,
         userId:action.userId,
@@ -75,7 +74,6 @@ const addProfileStart = (state) => {
     return updateObject(state,{loading:true});
 }
 const addProfileSuccess = (state,action,props) =>{
-    console.log('work')
     const newProfile = updateObject(action.profileData,{id:action.profileId});
     return updateObject(state,{
         loading:false,

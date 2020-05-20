@@ -134,6 +134,7 @@ totalTime = 0;
       this.finishsec = this.hourTosec(dat);
       let difftime = this.finishsec - this.state.startSec;
       this.totalTime = this.convertTime(difftime);
+      console.log(this.totalTime)
       let score ={
         score:this.score,
         submitted:true,

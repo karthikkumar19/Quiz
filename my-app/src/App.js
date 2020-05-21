@@ -73,8 +73,6 @@ render(){
 
   return(
     <div  >
-       
-    
             {routes}
  </div>
   )

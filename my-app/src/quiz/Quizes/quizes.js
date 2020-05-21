@@ -10,13 +10,32 @@ import {faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 
 class Quizes extends Component{
 
+state={
+  type:'tech'
+}
+
 componentDidMount(){
-    this.props.onFetchData();
+    this.props.onFetchData(this.state.type);
+}
+
+componentDidUpdate(prevProps, prevState){
+if(prevState.type!= this.state.type){
+  this.props.onFetchData(this.state.type);
+}
 }
 
 
 
+
     render(){
+
+
+      const onRadioChange = (e) => {
+        this.setState({
+          type: e.target.value
+        });
+      }
+
         const popover = (
             <Popover id="popover-basic">
               <Popover.Title as="h3">Delete the Quiz</Popover.Title>
@@ -44,7 +63,7 @@ componentDidMount(){
                         })
                     } 
                     <OverlayTrigger trigger="hover" placement="right"   overlay={popover}>
-                          <FontAwesomeIcon className={classes.trash} onClick={() => this.props.deleteQuiz(question.id)} icon={faTrashAlt} alt="delete" />
+                          <FontAwesomeIcon className={classes.trash} onClick={() => this.props.deleteQuiz(question.id,question.type)} icon={faTrashAlt} alt="delete" />
                   </OverlayTrigger>
                     <h4  >Answer:- {question.answer}</h4>
 
@@ -63,6 +82,24 @@ componentDidMount(){
             <Layout>
             
  <div className={classes.main}>
+ <label>
+                <input
+                  type="radio"
+                  value="tech"
+                  checked={this.state.type === "tech"}
+                  onChange={onRadioChange}
+                />
+                <span>Technical</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="nonTech"
+                  checked={this.state.type === "nonTech"}
+                  onChange={onRadioChange}
+                />
+                <span>Non-Technical</span>
+              </label>
                {quizes}
             </div>
             </Layout>
@@ -81,8 +118,8 @@ return{
 
 const mapDispatchToProps = dispatch => {
     return{
-        onFetchData : () => dispatch(actions.fetchData()),
-        deleteQuiz : (id) => dispatch(actions.deleteQuiz(id))
+        onFetchData : (type) => dispatch(actions.fetchQuiz(type)),
+        deleteQuiz : (id,type) => dispatch(actions.deleteQuiz(id,type))
     }
 }
 

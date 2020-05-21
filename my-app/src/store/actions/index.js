@@ -11,7 +11,8 @@ export{
     addData,
     fetchData,
     addScore,
-    deleteQuiz
+    deleteQuiz,
+    fetchQuiz
     } from './quiz';
 
     export{

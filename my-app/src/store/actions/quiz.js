@@ -22,10 +22,10 @@ export const addDataStart = () =>{
     };
 }
 
-export const addData = (quizData) => {
+export const addData = (quizData,type) => {
     return dispatch => {
         dispatch (addDataStart());
-        axios.post( 'https://quiz-4cf36.firebaseio.com/quiz.json',quizData )
+        axios.post( `https://quiz-4cf36.firebaseio.com/quiz/${type}.json`,quizData )
         .then( response => {
             dispatch(addDataSuccess(response.data.name, quizData));
         } )
@@ -62,12 +62,33 @@ export const fetchDataStart = () => {
 };
 
 
+export const fetchQuiz = (type) => {
+    return dispatch => {
+        dispatch (fetchDataStart());
+        axios.get( `https://quiz-4cf36.firebaseio.com/quiz/${type}.json`)
+        .then( res => {
+            const fetchedData = [];
+            for (let key in res.data) {
+                fetchedData.push({
+                    ...res.data[key],
+                    id: key
+                });
+            }
+            dispatch(fetchDataSuccess(fetchedData));
+        } )
+        .catch( error => {
+            dispatch(fetchDataFail(error));
+        } );
+    }
+}
+
+
 
 export const fetchData = (token, userId) => {
     return dispatch => {
         dispatch(fetchDataStart());
         // const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
-        axios.get('https://quiz-4cf36.firebaseio.com/quiz.json' )
+        axios.get('https://quiz-4cf36.firebaseio.com/quiz/tech.json' )
             .then(res => {
                 const fetchedData = [];
                 for (let key in res.data) {
@@ -76,19 +97,47 @@ export const fetchData = (token, userId) => {
                         id: key
                     });
                 }
-                dispatch(fetchDataSuccess(fetchedData));
+                let start = Math.floor(Math.random() * (5 - 0) + 0);
+                let end = start + 5;
+                let slicedArray1 = fetchedData.slice(start, end);
+                //second call
+                axios.get('https://quiz-4cf36.firebaseio.com/quiz/nonTech.json' )
+                .then(res => {
+                    const fetchedData = [];
+                    for (let key in res.data) {
+                        fetchedData.push({
+                            ...res.data[key],
+                            id: key
+                        });
+                    }
+                    console.log(fetchedData.length);
+                    let start = Math.floor(Math.random() * (5 - 0) + 0);
+                    let end = start + 5;
+                    console.log(start,end);
+                    let slicedArray = fetchedData.slice(start, end);
+                    let combinedarray = [...slicedArray1,...slicedArray]
+                    console.log(combinedarray)
+                    dispatch(fetchDataSuccess(combinedarray));
+                })
+                .catch(err => {
+                    dispatch(fetchDataFail(err));
+                });
+                // dispatch(fetchDataSuccess(slicedArray));
             })
             .catch(err => {
                 dispatch(fetchDataFail(err));
             });
+           
+            // dispatch(fetchDataSuccess(combinedArray));
     }
+    
 }
 
-export const deleteQuiz = (id) => {
+export const deleteQuiz = (id,type) => {
     return dispatch => {
-        axios.delete('https://quiz-4cf36.firebaseio.com/quiz/'+ id + '.json')
+        axios.delete(`https://quiz-4cf36.firebaseio.com/quiz/${type}/${id}.json`)
         .then(() => {
-            dispatch(fetchData());
+            dispatch(fetchQuiz(type));
         })
             
     

@@ -15,13 +15,21 @@ class Addquiz extends React.Component{
 state={
     QuestionName:'',
      options:[{ name: '', selected: false }],
-     answer:''
+     answer:'',
+     type:'tech'
   }
 
   
     render(){
      
 //input of busname and no
+
+const onRadioChange = (e) => {
+  this.setState({
+    type: e.target.value
+  });
+}
+
 
 const handleNo = event =>{
   event.preventDefault();
@@ -36,33 +44,9 @@ const handleNo = event =>{
 const handleSubmit = e => {
   e.preventDefault();
     console.log(this.state);
-    this.props.onAddQuiz(this.state);
+    this.props.onAddQuiz(this.state,this.state.type);
 }
-    //Submit data method!!
-    //   const handleSubmit = e => {
-    //     e.preventDefault();
-    //     // const formData = {};
-    //     // console.log(this.state);
-    //     // for (let formElementIdentifier in this.state) {
-    //     //     formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
-    //     // }
-    //     // console.log(formData);
-    //     axios.post( '/buses.json', this.state )
-    //     .then( response => {
-    //       console.log(response.data);
-    //     } )
-    //     .catch( error => {
-    //     } );
-    //     console.log("inputFields", this.state);
-    //   };
-    //   const handleInputChangeState = ( event,indexs) => {
-    //     this.setState({
-    //       names: update(this.state.names, {[indexs]: {stopname: {$set: event.target.value}}})
-    //     })
-
-    //   };
-
-
+    
       //Updating firstname and lastname Method!!
       const handleInputChange = (index, event) => {
         if(event.target.name === 'option'){
@@ -133,6 +117,24 @@ const handleSubmit = e => {
           //  const fetchedRedirect = this.props.added ? <Redirect to='/' /> : null;
            let form  = (
              <div>
+               <label>
+                <input
+                  type="radio"
+                  value="tech"
+                  checked={this.state.type === "tech"}
+                  onChange={onRadioChange}
+                />
+                <span>Technical</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="nonTech"
+                  checked={this.state.type === "nonTech"}
+                  onChange={onRadioChange}
+                />
+                <span>Non-Technical</span>
+              </label>
              <InputGroup className="mb-3">
                  <InputGroup.Prepend>
                    <InputGroup.Text id="basic-addon1">Question Name </InputGroup.Text>
@@ -190,7 +192,7 @@ return (
       
       const mapDispatchToProps = dispatch => {
           return{
-              onAddQuiz : (quizData) => dispatch(actions.addData(quizData))
+              onAddQuiz : (quizData,type) => dispatch(actions.addData(quizData,type))
           }
       }
         

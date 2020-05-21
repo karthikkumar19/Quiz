@@ -74,7 +74,8 @@ this.setState({score:true})
                                             <Input  value="E-mail">{pro.formData.email}</Input>
                                             <Input  value="Ph-no">{pro.formData.phno}</Input>
                                    <div className={classes.button}>
-                                   <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button>
+                                   {/* <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button> */}
+                                   <Button variant="success"  onClick={this.quizHandler}>Continue</Button>
                                    <Button variant="info" onClick={this.viewScore} >View Score</Button>  
                                    </div>  
                                    </div>

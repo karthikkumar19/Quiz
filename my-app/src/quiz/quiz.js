@@ -9,6 +9,7 @@ import * as actions from '../store/actions/index';
 import {Redirect} from 'react-router-dom';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import Timer from './Timer/timer';
+import { thisExpression } from '@babel/types';
 
 class Quiz extends Component{
   constructor(props) {
@@ -18,9 +19,9 @@ class Quiz extends Component{
       score:0,
       disabled:false,
       submitted:false,
-      startSec:0
+      seconds:600,time:{}
      }
-    
+   this.timer=0;
    }
 
   
@@ -33,17 +34,61 @@ class Quiz extends Component{
   //     this.props.history.goForward();
   // }
   
+  secondsToTime(secs){
+    let hours = Math.floor(secs / (60 * 60));
 
+    let divisor_for_minutes = secs % (60 * 60);
+    let minutes = Math.floor(divisor_for_minutes / 60);
+
+    let divisor_for_seconds = divisor_for_minutes % 60;
+    let seconds = Math.ceil(divisor_for_seconds);
+
+    let time = `h:${hours} m:${minutes} s:${seconds}`
+    
+
+    // let obj = {
+    //   "h": hours,
+    //   "m": minutes,
+    //   "s": seconds
+    // };
+    return time;
+  }
   
 componentDidMount(){
+  console.log("mm")
 this.props.onFetchData();
-    this.startTimer();
     window.onbeforeunload = function() {
       return "if you reload you have to attend the Test from first!"
    };
+   let timeLeftVar = this.secondsToTime(600);
+   this.startTimer();
+}
+
+startTimer() {
+   
+  if (this.timer === 0 ) {
+      this.timer = setInterval(this.countDown, 1000);
+  }
   
 }
 
+
+countDown = () => {
+  let seconds = this.state.seconds - 1;
+ 
+  this.setState({
+    time: this.secondsToTime(seconds),
+    seconds: seconds,
+  });
+  
+  // Check if we're at zero.
+  if (seconds === 0) { 
+      console.log('w')
+    clearInterval(this.timer);
+  }
+ 
+
+}
 
 componentDidUpdate(){
   window.history.pushState(null, "", window.location.href);
@@ -52,17 +97,17 @@ componentDidUpdate(){
   };
     }
 
-startTimer = () => {
-  var dat = new Date().toLocaleTimeString();
-  this.setState({startSec:this.hourTosec(dat)})
-}
-  hourTosec(dat){
-    var a = dat.split(':'); // split it at the colons
+// startTimer = () => {
+//   var dat = new Date().toLocaleTimeString();
+//   this.setState({startSec:this.hourTosec(dat)})
+// }
+//   hourTosec(dat){
+//     var a = dat.split(':'); // split it at the colons
 
-    // minutes are worth 60 seconds. Hours are worth 60 minutes.
-    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
-    return seconds;
-  }
+//     // minutes are worth 60 seconds. Hours are worth 60 minutes.
+//     var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+//     return seconds;
+//   }
 
 
  
@@ -96,7 +141,6 @@ onInputChange = (event) => {
 
 
    score = 0;
-finishsec = 0;
 
   check = () => {
       this.state.questions.map((question) => {
@@ -114,31 +158,39 @@ finishsec = 0;
       // this.setState({score: this.score})
   }
 
-  convertTime(sec) {
-    var hours = Math.floor(sec/3600);
-    (hours >= 1) ? sec = sec - (hours*3600) : hours = '00';
-    var min = Math.floor(sec/60);
-    (min >= 1) ? sec = sec - (min*60) : min = '00';
-    (sec < 1) ? sec='00' : void 0;
+//   convertTime(sec) {
+//     var hours = Math.floor(sec/3600);
+//     (hours >= 1) ? sec = sec - (hours*3600) : hours = '00';
+//     var min = Math.floor(sec/60);
+//     (min >= 1) ? sec = sec - (min*60) : min = '00';
+//     (sec < 1) ? sec='00' : void 0;
 
-    (min.toString().length === 1) ? min = '0'+min : void 0;    
-    (sec.toString().length === 1) ? sec = '0'+sec : void 0;    
+//     (min.toString().length === 1) ? min = '0'+min : void 0;    
+//     (sec.toString().length === 1) ? sec = '0'+sec : void 0;    
 
-    return hours+':'+min+':'+sec;
-}
+//     return hours+':'+min+':'+sec;
+// }
 
-totalTime = 0;
+// totalTime = 0;
+
+
+
+
+
   submit = () => {
       this.check();
-      var dat = new Date().toLocaleTimeString();
-      this.finishsec = this.hourTosec(dat);
-      let difftime = this.finishsec - this.state.startSec;
-      this.totalTime = this.convertTime(difftime);
-      console.log(this.totalTime)
+      // var dat = new Date().toLocaleTimeString();
+      // this.finishsec = this.hourTosec(dat);
+      // let difftime = this.finishsec - this.state.startSec;
+      // this.totalTime = this.convertTime(difftime);
+      clearInterval(this.timer);
+      let finalsec = 600 - this.state.seconds
+      console.log(this.secondsToTime( finalsec))
+      let total = this.secondsToTime(finalsec);
       let score ={
         score:this.score,
         submitted:true,
-        Totaltime:this.totalTime
+        Totaltime:total
       }
       this.props.onAddScore(this.props.profile[0].id,score);
   }

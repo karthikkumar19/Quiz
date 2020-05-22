@@ -2,8 +2,8 @@
 
 .main{
     width: 60%;
+    margin:auto;
     margin-top: 50px;
-    margin-left: 20%;
 }
 
 .card{
@@ -34,11 +34,11 @@
 
 }
 
-.title{
+/* .title{
     font-size: 40px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-align: center;
-}
+} */
 
 .Option{
     padding-left: 10px;
@@ -53,3 +53,16 @@
     color:red
 }
 
+.label{
+    margin-left: 10px;
+}
+
+
+@media (max-width: 450px){
+   .main{
+       width: 80%;
+   }
+   .card h1,h4,h3{
+       font-size: 20px;
+}
+}

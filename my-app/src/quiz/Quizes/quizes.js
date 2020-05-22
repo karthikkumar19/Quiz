@@ -49,7 +49,7 @@ if(prevState.type!= this.state.type){
             }else{
             quizes = questions.map((question,ind) => {
                 return(
-                    <div key={ind}>
+                    <div className={classes.data} key={ind}>
                       <Card className={classes.card}>
       <Card.Body>
      <h1>Question:- {ind+1}</h1>  <h3>{question.QuestionName}</h3>
@@ -91,7 +91,7 @@ if(prevState.type!= this.state.type){
                 />
                 <span>Technical</span>
               </label>
-              <label>
+              <label className={classes.label}>
                 <input
                   type="radio"
                   value="nonTech"

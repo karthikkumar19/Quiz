@@ -9,6 +9,7 @@
 }
 
 .details{
+    width: 100%;
     border: 1px solid whitesmoke;
     box-shadow: 0 0px 3px  #888;
         margin-top: 5%;
@@ -26,7 +27,7 @@
 }
 
 .score{
-    margin: 10px;
+    margin-top: 10px;
     color: grey;
 }
 
@@ -34,6 +35,31 @@
     text-align: left
 }
 
+
+
 .welcome{
     font-family: 'Balsamiq Sans', cursive;
 }
+
+.input{
+    width:150px;
+    overflow: scroll;
+}
+
+@media (max-width: 450px){
+    .main{
+        width: 90%;
+    }
+   .input{
+       width: 110px;
+   }
+   .welcome{
+       font-size: 20px;
+   }
+   .score{
+       font-size: 20px;
+   }.submitted{
+       font-size: 20px;
+   }
+}
+

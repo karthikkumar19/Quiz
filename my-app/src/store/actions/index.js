@@ -18,5 +18,7 @@ export{
     export{
         addProfile,
         fetchProfile,
-        fetchProfiles
+        fetchProfiles,
+        lowScores,
+        highScores
     }from './profile';

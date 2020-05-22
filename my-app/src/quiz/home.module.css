@@ -2,11 +2,17 @@
 
 .main{
     width:65%;
-    margin:auto;
+    display: flex;
+    margin: auto;
     margin-top: 5%;
+    
 }
 
-
+.jumbo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .main h1{
     text-align: center;
@@ -19,10 +25,39 @@
 }
 
 .main Button {
-    margin-left: 40%;
-    margin-top: 30px;
+    width: 30%;
 }
 
 /* .jumbo{
     background-color:rgba(255,255,255,0.6);
 } */
+
+
+/* small desktop */
+@media (max-width: 600px) {
+    .main Button{
+        width: 80%;
+    }
+    
+}
+
+
+/* tablet */
+
+@media (max-width: 800px) {
+    .main Button{
+        width: 60%;
+    }
+    
+}
+
+/* mobile View */
+
+@media (max-width: 450px){
+    .main{
+        width: 80%;
+    }
+    .main Button{
+        width: 80%;
+    }
+}

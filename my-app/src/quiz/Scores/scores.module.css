@@ -1,0 +1,23 @@
+.main{
+    width: 80%;
+    margin:auto
+}
+
+.title{
+    text-align: center;
+}
+
+.header{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.data{
+    margin-top: 20px;
+}
+
+@media (max-width: 450px){
+   .title{
+       font-size: 20px;
+   }
+}

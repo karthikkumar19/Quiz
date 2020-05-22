@@ -63,7 +63,7 @@ this.setState({score:true})
                          
                            <div key={ind}>
                            <h3 className={classes.welcome}>Welcome {pro.formData.name} !!</h3>
-                                   {pro.score.submitted ? <h1>your Answer is submitted</h1> : null}
+                                   {pro.score.submitted ? <h1 className={classes.submitted}>Your answer is submitted</h1> : null}
                                    <div className={classes.details}>
                                     
                                        
@@ -74,8 +74,8 @@ this.setState({score:true})
                                             <Input  value="E-mail">{pro.formData.email}</Input>
                                             <Input  value="Ph-no">{pro.formData.phno}</Input>
                                    <div className={classes.button}>
-                                   <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button>
-                                   {/* <Button variant="success"  onClick={this.quizHandler}>Continue</Button> */}
+                                   {/* <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button> */}
+                                   <Button variant="success"  onClick={this.quizHandler}>Continue</Button>
                                    <Button variant="info" onClick={this.viewScore} >View Score</Button>  
                                    </div>  
                                    </div>
@@ -83,7 +83,7 @@ this.setState({score:true})
         if (this.state.score) {
             if(pro.score.submitted){
           return (
-            <h3 className={classes.score}>Your Score is {pro.score.score} and Total time taken :- {pro.score.Totaltime}</h3>
+            <h3 className={classes.score}>Your Score is {pro.score.score} <br/> Total time taken :- {pro.score.Totaltime}</h3>
           )
             }else{
                 return(

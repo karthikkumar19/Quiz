@@ -7,7 +7,17 @@
     margin: auto;
 }
 
+.label{
+    margin-left: 10px;
+}
+
 .Form{
     margin-top: 0px !important;
+}
+
+@media (max-width:450px){
+    .inputMain h1{
+        font-size: 30px;
+    }
 }
 

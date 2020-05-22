@@ -3,8 +3,9 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import {connect} from 'react-redux';
 import Layout from '../../hoc/Layout/Layout';
 import * as actions from '../../store/actions/index';
-import {Card} from 'react-bootstrap';
+import {Card,DropdownButton,Dropdown} from 'react-bootstrap';
 import classes from './scores.module.css';
+
 
 class Scores extends Component{
 
@@ -21,7 +22,7 @@ componentDidMount(){
             let profiles = this.props.profile;
             profilee = profiles.map((profile,ind) => {
                 return(
-                    <div key={ind}>
+                    <div className={classes.data} key={ind}>
                       <Card className={classes.card}>
       <Card.Body>
                         <h3>{profile.formData.name}</h3>
@@ -41,6 +42,15 @@ componentDidMount(){
             <Layout>
                
  <div className={classes.main}>
+                <h3 className={classes.title}>Participant data and scores</h3>
+                <div className={classes.header}>
+                <DropdownButton id="dropdown-basic-button" title="Filter Scores">
+  <Dropdown.Item  onClick={() => this.props.onLowScores(this.props.profile)}>Low to High</Dropdown.Item>
+  <Dropdown.Item onClick={() => this.props.onHighScores(this.props.profile)}>High to Low</Dropdown.Item>
+  
+</DropdownButton>
+                </div>
+               
                {profilee}
             </div>
             </Layout>
@@ -52,14 +62,16 @@ componentDidMount(){
 const mapStateToProps = state => {
 return{
     profile:state.profile.profile,
-    loading:state.quizdata.loading,
-    fetched:state.quizdata.fetched,
+    loading:state.profile.loading,
+    fetched:state.profile.fetched,
 }
 }
 
 const mapDispatchToProps = dispatch => {
     return{
         onFetchProfiles : () => dispatch(actions.fetchProfiles()),
+        onLowScores :(profiles) => dispatch(actions.lowScores(profiles)),
+        onHighScores :(profiles) => dispatch(actions.highScores(profiles))
 
     }
 }

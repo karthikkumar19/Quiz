@@ -61,7 +61,23 @@ export const fetchProfileStart = () => {
     };
 };
 
+export const highScores = (newState) => {
+    console.log("work")
+    return dispatch => {
+        dispatch(fetchProfileStart());
+        newState.sort((a, b) => parseFloat(b.score.score) - parseFloat(a.score.score));
+        dispatch(fetchProfileSuccess(newState));
+        console.log('we')
+    }
+}
 
+export const lowScores = (newState) => {
+    return dispatch => {
+        dispatch(fetchProfileStart());
+        newState.sort((a, b) => parseFloat(a.score.score) - parseFloat(b.score.score));
+        dispatch(fetchProfileSuccess(newState));
+    }
+}
 
 export const fetchProfile = (token, userId) => {
     return dispatch => {

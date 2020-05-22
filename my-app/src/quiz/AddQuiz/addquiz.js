@@ -125,8 +125,8 @@ const handleSubmit = e => {
                   onChange={onRadioChange}
                 />
                 <span>Technical</span>
-              </label>
-              <label>
+              </label >
+              <label className={classes.label}>
                 <input
                   type="radio"
                   value="nonTech"

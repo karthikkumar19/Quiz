@@ -58,7 +58,7 @@ componentDidMount(){
   console.log("mm")
 this.props.onFetchData();
     window.onbeforeunload = function() {
-      return "if you reload you have to attend the Test from first!"
+      return    console.log('refresh')
    };
    let timeLeftVar = this.secondsToTime(600);
    this.startTimer();

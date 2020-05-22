@@ -1,7 +1,9 @@
 .main{
     width: 60%;
+    margin:auto;
     margin-top: 50px;
-    margin-left: 20%;
+    display: flex;
+    flex-direction: column;
 }
 
 .card{
@@ -14,18 +16,19 @@
 }
 
 .button{
-    margin:20px;
+    margin:auto;
+    margin-top: 10%;
     text-align: center;
-    margin-left: 40%;
     width: 20%;
 }
 
 .score{
     border: 3px solid gray;
     width: 20%;
-    text-align: center;
-    margin-left: 40%;
+    margin: auto;
 
+    margin-top: 5%;
+    text-align: center;
 }
 
 .title{
@@ -34,3 +37,18 @@
     text-align: center;
 }
 
+@media (max-width: 800px) {
+    .button{
+        width: 40%;
+    }
+    
+}
+
+@media (max-width: 450px){
+  .button{
+      width: 40%;
+  }
+  .main{
+      width: 80%;
+  }
+}

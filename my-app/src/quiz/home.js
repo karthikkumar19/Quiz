@@ -25,6 +25,15 @@ class Home extends Component {
   <p>
     A quiz competition is organized by dept of electrical and electronics. 
   </p>
+  <h4>GREY MATTER</h4>
+  <div>Staff Coordinator</div>
+  <span className={classes.stucor}>
+  Rajendran Joseph Rathish
+  </span>
+  <div>Student Coordinators</div>
+  <span className={classes.stucor}>
+  S.Dinesh - V.Harshitkumar
+  </span>
   
     <Button onClick={this.LoginHandler} variant="primary">Login to continue</Button>
   

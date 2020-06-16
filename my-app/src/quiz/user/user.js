@@ -16,7 +16,7 @@ class User extends Component {
 
     componentDidMount(){
         this.props.onFetchProfile(this.props.token,this.props.userId);
-        this.props.onfetchQuiz();
+        // this.props.onfetchQuiz();
        
         
     }
@@ -74,8 +74,8 @@ this.setState({score:true})
                                             <Input  value="E-mail">{pro.formData.email}</Input>
                                             <Input  value="Ph-no">{pro.formData.phno}</Input>
                                    <div className={classes.button}>
-                                   {/* <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button> */}
-                                   <Button variant="success"  onClick={this.quizHandler}>Continue</Button>
+                                   <Button variant="success" disabled={pro.score.submitted}  onClick={this.quizHandler}>Continue</Button>
+                                   {/* <Button variant="success"  onClick={this.quizHandler}>Continue</Button> */}
                                    <Button variant="info" onClick={this.viewScore} >View Score</Button>  
                                    </div>  
                                    </div>
@@ -111,16 +111,34 @@ this.setState({score:true})
                
             
             return(
-                <div className={classes.main}>
+                <div>
+                     <div className={classes.main}>
                      
-                    <Layout>
-                        {quizRedirect}
-        {user}
-         <Modal show={this.state.continue} modalClosed={this.cancel}>
-             {confirm}
-             </Modal>              
-                </Layout>
+                     <Layout>
+                         {quizRedirect}
+         {user}
+        
+          <Modal show={this.state.continue} modalClosed={this.cancel}>
+              {confirm}
+              </Modal>              
+                 </Layout>
+                 </div>
+                     <div className={classes.creator} style={{
+             
+             position:'absolute',
+             bottom:0,
+               backgroundColor:'#cbb9be',
+               width:'100%',
+               textAlign:'center'
+  
+  
+               
+             }}>
+             <h6 style={{padding:5}}>Created by <a href='https://karthikkumar19.github.io/personalsite/'>Karthik</a> | Application Best Viewed in Firefox, Chrome, Safari</h6>
+ 
+             </div>
                 </div>
+               
                
         
             )
@@ -145,10 +163,10 @@ const mapStateToProps = state => {
         loading:state.profile.loading,
         userId:state.auth.userId,
         form: state.auth.form ,
-        fetched : state.quizdata.fetched,
+        // fetched : state.quizdata.fetched,
         authRedirectPath: state.auth.authRedirectPath,
         profile: state.profile.profile,
-        quiz:state.quizdata.questions,
+        // quiz:state.quizdata.questions,
         isAdmin : state.auth.userId === '2OCao2w0T9WZGKbYgL7yplDyxtp1'
     };
 }
@@ -157,7 +175,7 @@ const mapDispatchToProps = dispatch => {
     return{
         onFetchProfile : (token,userId) => dispatch(actions.fetchProfile(token,userId)),
         onSetAuthRedirectPath : (path) => dispatch(actions.setAuthRedirectPath(path)),
-        onfetchQuiz : () => () => dispatch(actions.fetchData())
+        // onfetchQuiz : () => () => dispatch(actions.fetchData())
     }
 }
 

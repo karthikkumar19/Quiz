@@ -9,7 +9,6 @@ import * as actions from '../store/actions/index';
 import {Redirect} from 'react-router-dom';
 import withErrorHandler from '../hoc/withErrorHandler/withErrorHandler';
 import Timer from './Timer/timer';
-import { thisExpression } from '@babel/types';
 
 class Quiz extends Component{
   constructor(props) {
@@ -19,7 +18,7 @@ class Quiz extends Component{
       score:0,
       disabled:false,
       submitted:false,
-      seconds:600,time:{}
+      seconds:1800,time:{}
      }
    this.timer=0;
    }
@@ -60,7 +59,6 @@ this.props.onFetchData();
     window.onbeforeunload = function() {
       return    console.log('refresh')
    };
-   let timeLeftVar = this.secondsToTime(600);
    this.startTimer();
 }
 
@@ -184,7 +182,7 @@ onInputChange = (event) => {
       // let difftime = this.finishsec - this.state.startSec;
       // this.totalTime = this.convertTime(difftime);
       clearInterval(this.timer);
-      let finalsec = 600 - this.state.seconds
+      let finalsec = 1800 - this.state.seconds
       console.log(this.secondsToTime( finalsec))
       let total = this.secondsToTime(finalsec);
       let score ={
@@ -205,7 +203,7 @@ onInputChange = (event) => {
                 <div key={ind}>
                   <Card className={classes.card}>
   <Card.Body>
-  <h3>{question.QuestionName}</h3>                  
+  <h3>{ind+1} .{question.QuestionName}</h3>                  
                     {
                     question.options.map((lo, idx) => {
                       return (

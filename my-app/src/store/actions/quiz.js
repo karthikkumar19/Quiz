@@ -97,8 +97,8 @@ export const fetchData = (token, userId) => {
                         id: key
                     });
                 }
-                let start = Math.floor(Math.random() * (5 - 0) + 0);
-                let end = start + 5;
+                let start = Math.floor(Math.random() * (80 - 0) + 0);
+                let end = start + 20;
                 let slicedArray1 = fetchedData.slice(start, end);
                 //second call
                 axios.get('https://quiz-4cf36.firebaseio.com/quiz/nonTech.json' )
@@ -111,8 +111,8 @@ export const fetchData = (token, userId) => {
                         });
                     }
                     console.log(fetchedData.length);
-                    let start = Math.floor(Math.random() * (5 - 0) + 0);
-                    let end = start + 5;
+                    let start = Math.floor(Math.random() * (80 - 0) + 0);
+                    let end = start + 20;
                     console.log(start,end);
                     let slicedArray = fetchedData.slice(start, end);
                     let combinedarray = [...slicedArray1,...slicedArray]
